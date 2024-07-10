@@ -6,8 +6,18 @@ Servicio Rest CRUD Products y Carts.
 
 ## Imagenes Pruebas Productos
 
-### Get y limit
-![Get y limit](/pruebas_imagen/Get_productos_limit.jpg)
+### Get y limit Products
+![Get y limit Products](/pruebas_imagen/Get_productos_limit.jpg)
 
-### Notas Adicionales
-Cualquier otra información relevante.
+### Get Products por ID
+![Get Products por ID](/pruebas_imagen/Get_productos_id.jpg)
+
+### Post Products
+![Post Products](/pruebas_imagen/Post_productos_add.jpg)
+
+### Put Products por ID
+![Put Products por ID](/pruebas_imagen/Put_productos.jpg)
+
+### Delete Products por ID
+![Delete Products por ID](/pruebas_imagen/Delete_productos.jpg)
+

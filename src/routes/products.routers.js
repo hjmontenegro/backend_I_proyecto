@@ -1,19 +1,13 @@
 const express = require("express")
+const router = express.Router()
 const fs = require('fs');
 
-const app = express()
-const PORT = 8080
+const products = [];
 
-app.use(express.json())
-//Middlewars
-app.use(express.urlencoded({ extends: true }))
-
-//Creacion de un endpoint 
-
-app.get('/api/products', (req, res) => {
+router.get('/api/products', (req, res) => {
 
     // Lee el archivo "productos.json"
-    fs.readFile('data/products.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/products.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -30,10 +24,10 @@ app.get('/api/products', (req, res) => {
     });
 });
 
-app.get('/api/products/:pid', (req, res) => {
+router.get('/api/products/:pid', (req, res) => {
 
     // Lee el archivo "productos.json"
-    fs.readFile('data/products.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/products.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -42,8 +36,6 @@ app.get('/api/products/:pid', (req, res) => {
         const products = JSON.parse(data);
         const id = req.params.pid;
         const product = products.find(product => product.id === parseInt(id));
-
-        console.log(id);
 
         if (product) {
             res.json(product);
@@ -55,28 +47,27 @@ app.get('/api/products/:pid', (req, res) => {
 
 // Ruta para agregar un nuevo producto
 
-app.post('/api/products', (req, res) => {
+router.post('/api/products', (req, res) => {
 
     const { title, description, code, price, status, stock, category } = req.body;
     console.log(req.body.title)
 
     // Lee el archivo "productos.json"
-    fs.readFile('data/products.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/products.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
         
         const products = JSON.parse(data);
-        const id = products.length + 1;
+        const id = products.length > 0 ? products[products.length - 1].id + 1 : 1;
 
         const newProduct = { id, title, description, code, price, status, stock, category };
 
         products.push(newProduct);
 
         // Escribe los productos actualizados en el archivo "productos.json"
-
-        fs.writeFile('data/products.json', JSON.stringify(products, null, 2), err => {
+        fs.writeFile('src/data/products.json', JSON.stringify(products, null, 2), err => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -87,13 +78,13 @@ app.post('/api/products', (req, res) => {
     });
 });
 
-app.put('/api/products/:pid', (req, res) => {
+router.put('/api/products/:pid', (req, res) => {
 
     const { title, description, code, price, status, stock, category } = req.body;
     console.log(req.body.title)
 
     // Lee el archivo "productos.json"
-    fs.readFile('data/products.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/products.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -119,7 +110,7 @@ app.put('/api/products/:pid', (req, res) => {
             res.status(404).json({ message: "Tarea no encontrada" })
         }
 
-        fs.writeFile('data/products.json', JSON.stringify(products, null, 2), err => {
+        fs.writeFile('src/data/products.json', JSON.stringify(products, null, 2), err => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -130,12 +121,12 @@ app.put('/api/products/:pid', (req, res) => {
     });
 });
 
-app.delete('/api/products/:pid', (req, res) => {
+router.delete('/api/products/:pid', (req, res) => {
 
     console.log(req.body.title)
 
     // Lee el archivo "productos.json"
-    fs.readFile('data/products.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/products.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -146,7 +137,7 @@ app.delete('/api/products/:pid', (req, res) => {
 
         const product = products.filter((prod) => prod.id !==  id)
 
-        fs.writeFile('data/products.json', JSON.stringify(product, null, 2), err => {
+        fs.writeFile('src/data/products.json', JSON.stringify(product, null, 2), err => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -157,7 +148,4 @@ app.delete('/api/products/:pid', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log("Server running on port " + PORT)
-})
-
+module.exports = router

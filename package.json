@@ -1,16 +1,18 @@
 {
-  "name": "clase-4",
+  "name": "primera_entrega",
   "version": "1.0.0",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node --watch app.js"
+    "start": "node --watch src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   }
 }

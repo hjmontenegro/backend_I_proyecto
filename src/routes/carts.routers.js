@@ -5,20 +5,20 @@ const fs = require('fs');
 router.post('/api/carts', (req, res) => {
 
     // Lee el archivo "carts.json"
-    fs.readFile('data/carts.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/carts.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
         
         const carts = (data === "")? [] : JSON.parse(data);
-        const id = carts.length + 1;
+        const id = carts.length > 0 ? carts[carts.length - 1].id + 1 : 1;
 
         const newCarts = { id, products : [] }
         carts.push(newCarts);
 
         // Escribe los productos actualizados en el archivo "productos.json"
-        fs.writeFile('data/carts.json', JSON.stringify(carts, null, 2), err => {
+        fs.writeFile('src/data/carts.json', JSON.stringify(carts, null, 2), err => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Internal Server Error' });
@@ -31,7 +31,7 @@ router.post('/api/carts', (req, res) => {
 
 router.post('/api/carts/:cid/product/:pid', (req, res) => {
     // Lee el archivo "carts.json"
-    fs.readFile('data/carts.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/carts.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -64,7 +64,7 @@ router.post('/api/carts/:cid/product/:pid', (req, res) => {
             }
 
             // Escribe los productos actualizados en el archivo "carts.json"
-            fs.writeFile('data/carts.json', JSON.stringify(cart, null, 2), err => {
+            fs.writeFile('src/data/carts.json', JSON.stringify(cart, null, 2), err => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ error: 'Internal Server Error' });
@@ -84,7 +84,7 @@ router.post('/api/carts/:cid/product/:pid', (req, res) => {
 
 function BuscarProductos () {
     // Lee el archivo "products.json"
-    fsDos.readFile('data/products.json', 'utf8', (err, data) => {
+    fsDos.readFile('src/data/products.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });

@@ -1,6 +1,7 @@
 const express = require("express")
 const path = require("path")
 const productsRouter = require("./routes/products.routers.js") 
+const cartsRouter = require("./routes/carts.routers.js") 
 
 const app = express()
 const PORT = 8080
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extends: true })) //Middlewars para recibir paramet
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use("/", productsRouter);
+app.use("/", cartsRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

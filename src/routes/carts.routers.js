@@ -29,23 +29,65 @@ router.post('/api/carts', (req, res) => {
     });
 });
 
-router.post('/api/carts/:cid/product/:pid', (req, res) => {
+router.get('/api/carts/:cid', (req, res) => {
+
     // Lee el archivo "carts.json"
     fs.readFile('src/data/carts.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
+        
+        const carts = (data === "")? [] : JSON.parse(data);
+        const carts_id = req.params.cid;
+
+        const cart = carts.find(cart => cart.id === parseInt(carts_id));
+
+        // Escribe los productos actualizados en el archivo "productos.json"
+        fs.writeFile('src/data/carts.json', JSON.stringify(carts, null, 2), err => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+
+            res.json(cart);
+        });
+    });
+});
+
+router.post('/api/carts/:cid/product/:pid', (req, res) => {
+    
+    
+    // Lee el archivo "carts.json"
+    fs.readFile('src/data/carts.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        let products = [];
+        fs.readFile('src/data/products.json', 'utf8', (errCarts, dataCarts) => {
+            if (errCarts) {
+                console.error(errCarts);
+                return res.status(500).json({ errCarts: 'Internal Server Error' });
+            }
+            products = JSON.parse(dataCarts);
+        });
 
         const carts = JSON.parse(data);
-        const products = BuscarProductos();
+        //const products = BuscarProductos();
         const carts_id = req.params.cid;
         const producto_id = req.params.pid;
+
+        console.log(carts_id)
+        console.log(producto_id)
 
         console.log(products)
 
         const cart = carts.find(cart => cart.id === parseInt(carts_id));
         const product = products.find(product => product.id === parseInt(producto_id));
+
+        console.log(cart)
+        console.log(product)
 
         //const newCarts = { id, products { title, description };
 
@@ -74,17 +116,14 @@ router.post('/api/carts/:cid/product/:pid', (req, res) => {
             });
 
         } else {
-            if(!cart)
-                res.status(404).json({ error: 'Cart no encontrado' });
-            else
-                res.status(404).json({ error: 'Product no encontrado' });
+            res.status(404).json({ error: 'Cart no encontrado' });
         }
     });
 });
 
 function BuscarProductos () {
     // Lee el archivo "products.json"
-    fsDos.readFile('src/data/products.json', 'utf8', (err, data) => {
+    fs.readFile('src/data/products.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });

@@ -21,3 +21,10 @@ Servicio Rest CRUD Products y Carts.
 ### Delete Products por ID
 ![Delete Products por ID](/pruebas_imagen/Delete_productos.jpg)
 
+## Imagenes Pruebas Carts
+
+### Get Carts por ID
+![Get Products por ID](/pruebas_imagen/Get_Carts_id.jpg)
+
+### Post Carts
+![Post Products](/pruebas_imagen/Post_Cart_add.jpg)

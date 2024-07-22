@@ -9,7 +9,16 @@
   },
   {
     "id": 3,
-    "products": []
+    "products": [
+      {
+        "producto_id": "7",
+        "quantity": 1
+      },
+      {
+        "producto_id": "5",
+        "quantity": 1
+      }
+    ]
   },
   {
     "id": 4,

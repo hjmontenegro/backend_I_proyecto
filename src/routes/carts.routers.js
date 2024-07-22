@@ -65,13 +65,7 @@ router.post('/api/carts/:cid/product/:pid', (req, res) => {
             return res.status(500).json({ error: 'Internal Server Error' });
         }
         let products = [];
-        /*fs.readFile('src/data/products.json', 'utf8', (errCarts, dataCarts) => {
-            if (errCarts) {
-                console.error(errCarts);
-                return res.status(500).json({ errCarts: 'Internal Server Error' });
-            }
-            products = JSON.parse(dataCarts);
-        });*/
+        
 
         const carts = JSON.parse(data);
         //const products = BuscarProductos();
@@ -91,19 +85,21 @@ router.post('/api/carts/:cid/product/:pid', (req, res) => {
 
         //const newCarts = { id, products { title, description };
 
+        console.log(products)
+
         if (cart) { //&& product) {
-            //const Cartproduct = cart.products.find(product => product.id === parseInt(producto_id));
+            const Cartproduct = cart.products.find(product => product.producto_id === producto_id);
 
-            //console.log(Cartproduct)
+            console.log(Cartproduct)
 
-            //if(Cartproduct) {
-                //Cartproduct.quantity += 1;
-            //} else {
+            if(Cartproduct) {
+                Cartproduct.quantity += 1;
+            } else {
                 const newProduct = {producto_id, quantity:1}
                 cart.products.push(newProduct);
 
                 //res.json(cart.products);
-            //}
+            }
 
             // Escribe los productos actualizados en el archivo "carts.json"
             fs.writeFile('src/data/carts.json', JSON.stringify(carts, null, 2), err => {
